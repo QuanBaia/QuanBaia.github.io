@@ -328,6 +328,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -354,7 +376,21 @@
       
         
           
-            
+            <h1 id="Redis-二级缓存"><a href="#Redis-二级缓存" class="headerlink" title="Redis 二级缓存"></a>Redis 二级缓存</h1><p>由于 Redis 的极佳表现和可以持久化的操作越来越受企业的欢迎，我们今天就来探讨一下，怎么使用 Redis 当做 MyBatis 的二级缓存</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>Redis相对于其他 Key–Value 数据库，Redis 支持数据 <font color="red">持久化</font></li>
+<li>可以进行数据库备份，即 Master-slave 模式的数据备份</li>
+<li>速度方面 Redis 的性能极佳，读的速度是<font color="red">110000</font>次/s,写的速度是<font color="red">81000</font>次/s</li>
+<li>丰富的数据类型 – Redis支持二进制案例的 String，List，Hashe，Set 及 Ordered Set 数据类型操作</li>
+<li>Redis 的所有操作都是原子性的，同时 Redis 还支持对几个操作全并后的原子性执行</li>
+<li>Redis还支持 publish/subscribe，通知等等</li>
+</ul>
+<h2 id="需要准备"><a href="#需要准备" class="headerlink" title="需要准备"></a>需要准备</h2><h3 id="在-SpringMVC-中加入对-Redis-提供的-Jar-包"><a href="#在-SpringMVC-中加入对-Redis-提供的-Jar-包" class="headerlink" title="在 SpringMVC 中加入对 Redis 提供的 Jar 包:"></a>在 SpringMVC 中加入对 Redis 提供的 Jar 包:</h3><ul>
+<li>commons-pool2-2.4.2.jar (使用 Redis 的连接池)<br></li>
+<li>jedis-2.4.2.jar (Java 对于 Redis 的开发包)<br></li>
+<li>spring-data-redis-1.6.0.RELEASE.jar (高度封装 jedis,操作redis中的数据)<br></li>
+</ul>
+<h3 id="VMware-Workstation-Pro-虚拟机，在-Linux-下安装-Redis"><a href="#VMware-Workstation-Pro-虚拟机，在-Linux-下安装-Redis" class="headerlink" title="VMware Workstation Pro 虚拟机，在 Linux 下安装 Redis"></a>VMware Workstation Pro 虚拟机，在 Linux 下安装 Redis<br></h3><h3 id="RedisDesktopManager-Windos下的Redis视图化操作软件"><a href="#RedisDesktopManager-Windos下的Redis视图化操作软件" class="headerlink" title="RedisDesktopManager (Windos下的Redis视图化操作软件 )"></a>RedisDesktopManager (Windos下的Redis视图化操作软件 )</h3>
           
         
       
@@ -560,7 +596,25 @@
           
 
           
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>
