@@ -376,7 +376,8 @@
       
         
           
-            <h1 id="Redis-二级缓存"><a href="#Redis-二级缓存" class="headerlink" title="Redis 二级缓存"></a>Redis 二级缓存</h1><p>由于 Redis 的极佳表现和可以持久化的操作越来越受企业的欢迎，我们今天就来探讨一下，怎么使用 Redis 当做 MyBatis 的二级缓存</p>
+            <h1 id="Redis-二级缓存"><a href="#Redis-二级缓存" class="headerlink" title="Redis 二级缓存"></a>Redis 二级缓存</h1><hr>
+<p>由于 Redis 的极佳表现和可以持久化的操作越来越受企业的欢迎，我们今天就来探讨一下，怎么使用 Redis 当做 MyBatis 的二级缓存</p>
 <h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
 <li>Redis相对于其他 Key–Value 数据库，Redis 支持数据 <font color="red">持久化</font></li>
 <li>可以进行数据库备份，即 Master-slave 模式的数据备份</li>
@@ -390,7 +391,41 @@
 <li>jedis-2.4.2.jar (Java 对于 Redis 的开发包)<br></li>
 <li>spring-data-redis-1.6.0.RELEASE.jar (高度封装 jedis,操作redis中的数据)<br></li>
 </ul>
-<h3 id="VMware-Workstation-Pro-虚拟机，在-Linux-下安装-Redis"><a href="#VMware-Workstation-Pro-虚拟机，在-Linux-下安装-Redis" class="headerlink" title="VMware Workstation Pro 虚拟机，在 Linux 下安装 Redis"></a>VMware Workstation Pro 虚拟机，在 Linux 下安装 Redis<br></h3><h3 id="RedisDesktopManager-Windos下的Redis视图化操作软件"><a href="#RedisDesktopManager-Windos下的Redis视图化操作软件" class="headerlink" title="RedisDesktopManager (Windos下的Redis视图化操作软件 )"></a>RedisDesktopManager (Windos下的Redis视图化操作软件 )</h3>
+<h3 id="VMware-Workstation-Pro-虚拟机，在-Linux-下安装-Redis"><a href="#VMware-Workstation-Pro-虚拟机，在-Linux-下安装-Redis" class="headerlink" title="VMware Workstation Pro 虚拟机，在 Linux 下安装 Redis"></a>VMware Workstation Pro 虚拟机，在 Linux 下安装 Redis<br></h3><h3 id="RedisDesktopManager-Windos下的Redis视图化操作软件"><a href="#RedisDesktopManager-Windos下的Redis视图化操作软件" class="headerlink" title="RedisDesktopManager (Windos下的Redis视图化操作软件 )"></a>RedisDesktopManager (Windos下的Redis视图化操作软件 )</h3><h2 id="在-Linux-下部署-Redis"><a href="#在-Linux-下部署-Redis" class="headerlink" title="在 Linux 下部署 Redis"></a>在 Linux 下部署 Redis</h2><p>首先我们需要把 Redis 安装</p>
+<h3 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h3><p>如果你是 Ubuntu 下的用户，安装就比较方便</p>
+<blockquote>
+<p>首先我们要打开终端进行操作,进行下载安装</p>
+</blockquote>
+<pre>
+  <code>$sudo apt-get install redis-server</code>
+</pre>
+
+<blockquote>
+<p>启动 Redis 服务</p>
+</blockquote>
+<pre>
+  <code>$redis-server</code>
+</pre>
+
+<p><img src="../img/redis2ji/redis-star.jpg" alt="redis-star"></p>
+<p>看到这个图片说明已经成功安装</p>
+<blockquote>
+<p>客户端连接 Redis</p>
+</blockquote>
+<pre>
+  <code>$redis-cli</code>
+</pre>
+
+<blockquote>
+<p>进入操作界面，任何我们 Ping 一下试试能不能 Ping 通</p>
+</blockquote>
+<pre>
+  <code>127.0.0.1:6379>ping
+  PONG</code>
+</pre>
+
+<p>表示已经成功连接</p>
+
           
         
       
@@ -611,7 +646,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
