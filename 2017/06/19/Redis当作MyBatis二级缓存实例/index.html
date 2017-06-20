@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://i1.buimg.com/598118/1f750d49203ee0c6.jpg">
 <meta property="og:image" content="http://i1.buimg.com/598118/59c136379752c42d.jpg">
 <meta property="og:image" content="http://i4.piimg.com/598118/0f102e6bc2f5cca6.jpg">
-<meta property="og:updated_time" content="2017-06-20T21:39:10.543Z">
+<meta property="og:updated_time" content="2017-06-20T21:43:19.649Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis当作MyBatis二级缓存实例">
 <meta name="twitter:description" content="Redis 二级缓存 由于 Redis 的极佳表现和可以持久化的操作越来越受企业的欢迎，我们今天就来探讨一下，怎么使用 Redis 当做 MyBatis 的二级缓存 优点 使用缓存可以有效的避免重复性的请求服务器数据库，减少对服务器的请求次数，更好的用户体验 Redis相对于其他 Key–Value 数据库，Redis 支持数据 持久化 可以进行数据库备份，即 Master-slave 模式的数据">
@@ -597,14 +597,31 @@ cd /usr/redis </code>
 </blockquote>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">DEBUG [http-bio-8080-exec-7] - Cache Hit Ratio [com.test.mapper.TagMapper]: 0.5</div><div class="line">DEBUG [http-bio-8080-exec-7] - Fetching JDBC Connection from DataSource</div><div class="line">DEBUG [http-bio-8080-exec-7] - Registering transaction synchronization for JDBC Connection</div><div class="line">DEBUG [http-bio-8080-exec-7] - JDBC Connection [jdbc:mysql://127.0.0.1/sayhi?useUnicode=true&amp;characterEncoding=utf-8, UserName=root@localhost, MySQL-AB JDBC Driver] will be managed by Spring</div><div class="line">DEBUG [http-bio-8080-exec-7] - ==&gt;  Preparing: select tagid,tagname,tagstate from tag</div><div class="line">DEBUG [http-bio-8080-exec-7] - ==&gt; Parameters:</div><div class="line">DEBUG [http-bio-8080-exec-7] - &lt;==      Total: 7</div><div class="line">DEBUG [http-bio-8080-exec-7] - Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@744eff70]</div><div class="line">DEBUG [http-bio-8080-exec-7] - Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@744eff70]</div><div class="line">DEBUG [http-bio-8080-exec-7] - Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@744eff70]</div><div class="line">DEBUG [http-bio-8080-exec-7] - Returning JDBC Connection to DataSource</div><div class="line">DEBUG [http-bio-8080-exec-7] - Rendering view [org.springframework.web.servlet.view.JstlView: name &apos;index&apos;; URL [index.jsp]] in DispatcherServlet with name &apos;springmvc&apos;</div><div class="line">DEBUG [http-bio-8080-exec-7] - Forwarding to resource [index.jsp] in InternalResourceView &apos;index&apos;</div><div class="line">DEBUG [http-bio-8080-exec-7] - Successfully completed request</div></pre></td></tr></table></figure>
+<pre><code>
+DEBUG [http-bio-8080-exec-7] - Cache Hit Ratio [com.test.mapper.TagMapper]: 0.5
+DEBUG [http-bio-8080-exec-7] - Fetching JDBC Connection from DataSource
+DEBUG [http-bio-8080-exec-7] - Registering transaction synchronization for JDBC Connection
+DEBUG [http-bio-8080-exec-7] - JDBC Connection [jdbc:mysql://127.0.0.1/sayhi?useUnicode=true&characterEncoding=utf-8, UserName=root@localhost, MySQL-AB JDBC Driver] will be managed by Spring
+DEBUG [http-bio-8080-exec-7] - ==>  Preparing: select tagid,tagname,tagstate from tag
+DEBUG [http-bio-8080-exec-7] - ==> Parameters:
+DEBUG [http-bio-8080-exec-7] - <== 7="" total:="" debug="" [http-bio-8080-exec-7]="" -="" releasing="" transactional="" sqlsession="" [org.apache.ibatis.session.defaults.defaultsqlsession@744eff70]="" transaction="" synchronization="" deregistering="" closing="" returning="" jdbc="" connection="" to="" datasource="" rendering="" view="" [org.springframework.web.servlet.view.jstlview:="" name="" 'index';="" url="" [index.jsp]]="" in="" dispatcherservlet="" with="" 'springmvc'="" forwarding="" resource="" [index.jsp]="" internalresourceview="" 'index'="" successfully="" completed="" request="" <="" code=""></==></code></pre>
+
 <ul>
 <li>让我们再次发送一次请求试一下，来验证第二次请求有没有到 MySql 数据库中查询数据<blockquote>
 <p>在这里分析一下日志，我们可以发现，当请求来的时候我们去查找数据，先去 Redis 中查询，这时发现了数据，不再向 Mysql 中查询数据了，也就是说，当请求多的情况下，我们没有一次又一次的访问 MySql 而是直接在 Redis 中拿数据</p>
 </blockquote>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">DEBUG [http-bio-8080-exec-9] - Cache Hit Ratio [com.test.mapper.TagMapper]: 0.6666666666666666</div><div class="line">DEBUG [http-bio-8080-exec-9] - Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57e82ee8]</div><div class="line">DEBUG [http-bio-8080-exec-9] - Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57e82ee8]</div><div class="line">DEBUG [http-bio-8080-exec-9] - Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57e82ee8]</div><div class="line">DEBUG [http-bio-8080-exec-9] - Rendering view [org.springframework.web.servlet.view.JstlView: name &apos;index&apos;; URL [index.jsp]] in DispatcherServlet with name &apos;springmvc&apos;</div><div class="line">DEBUG [http-bio-8080-exec-9] - Forwarding to resource [index.jsp] in InternalResourceView &apos;index&apos;</div><div class="line">DEBUG [http-bio-8080-exec-9] - Successfully completed request</div></pre></td></tr></table></figure>
+<pre><code>
+DEBUG [http-bio-8080-exec-9] - Cache Hit Ratio [com.test.mapper.TagMapper]: 0.6666666666666666
+DEBUG [http-bio-8080-exec-9] - Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57e82ee8]
+DEBUG [http-bio-8080-exec-9] - Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57e82ee8]
+DEBUG [http-bio-8080-exec-9] - Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57e82ee8]
+DEBUG [http-bio-8080-exec-9] - Rendering view [org.springframework.web.servlet.view.JstlView: name 'index'; URL [index.jsp]] in DispatcherServlet with name 'springmvc'
+DEBUG [http-bio-8080-exec-9] - Forwarding to resource [index.jsp] in InternalResourceView 'index'
+DEBUG [http-bio-8080-exec-9] - Successfully completed request
+</code></pre>
+
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>Redis 是内存数据库，速度方面是快于关系数据库，让我们把 Redis 与 MySql 搭配成好基友，这样程序的性能就会大大的提高，避免一些不必要的操作</li>
 <li>在 RedisDesktopManager 工具中，我们可以发先都是数据都是一些字节码<br><img src="http://i4.piimg.com/598118/0f102e6bc2f5cca6.jpg" alt="Markdown"></li>
