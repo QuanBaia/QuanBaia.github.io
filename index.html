@@ -425,6 +425,105 @@
 </pre>
 
 <p>表示已经成功连接</p>
+<h3 id="另一种安装方式"><a href="#另一种安装方式" class="headerlink" title="另一种安装方式"></a>另一种安装方式</h3><blockquote>
+<p>我们需要把 Redis 安装包下载下来，自行安装</p>
+</blockquote>
+<pre>
+  <code>$ wget http://download.redis.io/releases/redis-2.8.3.tar.gz
+$ tar xzf redis-3.2.9.tar.gz
+$ cd redis-3.2.9
+$ make </code>
+</pre>
+
+<blockquote>
+<p>编译完成之后，在 src 目录文件下我们可以找到 4 个可执行的文件redis-server、redis-benchmark、redis-cli和redis.conf。我们把他们拷贝到一个目录下，这样我们就可以方便的配置和管理我们的 Redis</p>
+</blockquote>
+<pre>
+  <code>mkdir /usr/redis
+cp redis-server /usr/redis
+cp redis-benchmark /usr/redis
+cp redis-cli /usr/redis
+cp redis.conf /usr/redis
+cd /usr/redis </code>
+</pre>
+
+<ul>
+<li><p>这个 redis.conf 是 Reids 的配置文件，在里面可以设置密码等等，在启动的时候我们只需要指定一下配置文件就可以了</p>
+<p>这样基本上就是安装完成了，测试部分和 Ubuntu 的步骤一样</p>
+</li>
+</ul>
+<h3 id="配置-Redis-文件"><a href="#配置-Redis-文件" class="headerlink" title="配置 Redis 文件"></a>配置 Redis 文件</h3><blockquote>
+<p>因为我们是用 Windos 来连接 Redis 所以要稍微修改一下配置文件</p>
+</blockquote>
+<p><img src="http://i2.muimg.com/598118/bca2a41889a3f811.jpg" alt="bangding"></p>
+<p>我们把这一块要注释掉，就是不绑定主机，如果绑定了，别人就不能连接了</p>
+<p><img src="http://i2.muimg.com/598118/a5faf5bbdebfa5eb.jpg" alt="mima"></p>
+<p>找到这一块，添加一个密码，不然我们会报错发现会报 DENIED Redis is running in protected mode because protected mode is enabled…UI 异常，就是说我们的 Reids 现在属于受保护的状态，我们设置密码以后就可以解决这个问题</p>
+<blockquote>
+<p>设置完成之后我们需要指定该配置文件进行启动 Reids 服务</p>
+</blockquote>
+<pre>
+  <code>$redis-server /usr/redis/reids.conf</code>
+</pre>
+
+<blockquote>
+<p>启动之后我们发现我们连接客户端时不输入密码也可以进入，但是我们不能进行任何操作，我们需要用密码登入才可以</p>
+</blockquote>
+<pre>
+  <code>$redis-cli -a myredis</code>
+</pre>
+
+<p>-h 是连接的主机ip，host的缩写，-p 是端口 port的缩写  ，-a 后面是密码（requirepass 后面配置的）auth的缩写</p>
+<p>我们测试一下，如果ping通过，那么在Linux下的部署就已经完成了</p>
+<h2 id="Windos-下安装-Redis-视图画的工具"><a href="#Windos-下安装-Redis-视图画的工具" class="headerlink" title="Windos 下安装 Redis 视图画的工具"></a>Windos 下安装 Redis 视图画的工具</h2><ul>
+<li>我们使用这个工具主要是为了在 Windos 更好更直观的查看 Reids 里面的数据</li>
+</ul>
+<blockquote>
+<p><a href="https://redisdesktop.com/download" target="_blank" rel="external">https://redisdesktop.com/download</a> 点击进入下载页面，直接下载安装就 Ok 了</p>
+</blockquote>
+<ul>
+<li>我们下载完成之后可以看到</li>
+</ul>
+<blockquote>
+<p>点击 按钮 先创建一个连接</p>
+</blockquote>
+<p><img src="http://i1.buimg.com/598118/7789f132479f4dd7.jpg" alt="Markdown"></p>
+<blockquote>
+<p>然后输入对应的信息，name–》创建名，host–》ip地址，port–》端口号，auth–》密码</p>
+</blockquote>
+<p><img src="http://i1.buimg.com/598118/93b718ba2dc65eb0.jpg" alt="Markdown"></p>
+<p>点击测试连接，如果提示成功的话，就成功了，如果没有成功，我们仔细查看 Linux 的 Ip 地址以免输入错误，再不对的话，仔细检查上面步骤</p>
+<pre>
+  <code>$ifconfig     //查看ip地址</code>
+</pre>
+
+<h2 id="Mysql-创建数据表"><a href="#Mysql-创建数据表" class="headerlink" title="Mysql 创建数据表"></a>Mysql 创建数据表</h2><blockquote>
+<p>现在我们完成 Redis 的部分之后 ，因为是当作 二级缓存 我们主要数据还是存储在 MySql 当中的，所以我们创建一张数据库表</p>
+</blockquote>
+<p><img src="http://i1.buimg.com/598118/1f750d49203ee0c6.jpg" alt="Markdown"></p>
+<h2 id="Eclipse的操作"><a href="#Eclipse的操作" class="headerlink" title="Eclipse的操作"></a>Eclipse的操作</h2><ul>
+<li><p>接下来我们就开始写一个简单的查询 Demo 来体验一下 Redis 带来的快感</p>
+</li>
+<li><p>创建项目之类的就不在这里叙述了，我相信大家都会 23333333333 ，导入 SpringMVC，MySql，MyBatis所对应的Jar包</p>
+</li>
+<li><p>加入 Redis 的管理操作 Jar 包</p>
+<blockquote>
+<p>commons-pool2-2.4.2.jar(使用 Redis 的连接池)<br><br>jedis-2.4.2.jar (Java 对于 Redis 的开发包)<br><br>spring-data-redis-1.6.0.RELEASE.jar (高度封装 jedis,操作redis中的数据)</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="spring-配置"><a href="#spring-配置" class="headerlink" title="spring 配置"></a>spring 配置</h3><ol>
+<li>application-dao.xml</li>
+</ol>
+<blockquote>
+<p>Redis 在Spring 中的主要配置</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></div><div class="line">	<span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:mvc</span>=<span class="string">"http://www.springframework.org/schema/mvc"</span></div><div class="line">	<span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></div><div class="line">	<span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span> <span class="attr">xmlns:tx</span>=<span class="string">"http://www.springframework.org/schema/tx"</span></div><div class="line">	<span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd</div><div class="line">		http://www.springframework.org/schema/mvc</div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd</div><div class="line">		http://www.springframework.org/schema/context</div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd</div><div class="line">		http://www.springframework.org/schema/aop</div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd</div><div class="line">		http://www.springframework.org/schema/tx</div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd "&gt;</div><div class="line">		<span class="comment">&lt;!-- 把链接数据库的字符串文件加载进来 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">"classpath:db.properties"</span>/&gt;</span></div><div class="line"></div><div class="line">		<span class="comment">&lt;!-- 建立连接池 --&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 数据源的配置 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"basicDataSource"</span> <span class="attr">class</span>=<span class="string">"org.apache.commons.dbcp.BasicDataSource"</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driverClassName"</span> <span class="attr">value</span>=<span class="string">"$&#123;jdbc.driver&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"$&#123;jdbc.url&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"$&#123;jdbc.username&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"$&#123;jdbc.password&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 有了连接池，然后建立会话 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"basicDataSource"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"configLocation"</span> <span class="attr">value</span>=<span class="string">"classpath:sqlmapconfig.xml"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 扫描mapper --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">bean</span>  <span class="attr">class</span>=<span class="string">"org.mybatis.spring.mapper.MapperScannerConfigurer"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"basePackage"</span> <span class="attr">value</span>=<span class="string">"com.test.mapper"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sqlSessionFactoryBeanName"</span> <span class="attr">value</span>=<span class="string">"sqlSessionFactory"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">bean</span>&gt;</span>		</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	<span class="comment">&lt;!-- 配置redis参数 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"poolConfig"</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisPoolConfig"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxIdle"</span> <span class="attr">value</span>=<span class="string">"200"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxTotal"</span> <span class="attr">value</span>=<span class="string">"1024"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxWaitMillis"</span> <span class="attr">value</span>=<span class="string">"10000"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"testOnBorrow"</span> <span class="attr">value</span>=<span class="string">"true"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="comment">&lt;!-- spring连接redis管理 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"jedisConnectionFactory"</span> <span class="attr">class</span>=<span class="string">"org.springframework.data.redis.connection.jedis.JedisConnectionFactory"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hostName"</span> <span class="attr">value</span>=<span class="string">"192.168.111.132"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span> <span class="comment">&lt;!-- ip地址 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"port"</span> <span class="attr">value</span>=<span class="string">"6379"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span> <span class="comment">&lt;!-- 端口号 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"myredis"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span> <span class="comment">&lt;!-- Reids 密码 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"poolConfig"</span>&gt;</span>  </div><div class="line">			<span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">"poolConfig"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line">	<span class="comment">&lt;!-- 使用中间类解决RedisCache   jedisConnectionFactory的静态注入实现mybatis的第三方缓存 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"redisCacheTransfer"</span> <span class="attr">class</span>=<span class="string">"com.test.redis.RedisCacheTransfer"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"jedisConnectionFactory"</span> &gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">"jedisConnectionFactory"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">			<span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+<ol>
+<li><p>application-service.xml 这个配置文件主要是配置 Service 的注入</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"> <span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></div><div class="line"><span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:mvc</span>=<span class="string">"http://www.springframework.org/schema/mvc"</span></div><div class="line"><span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></div><div class="line"><span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span> <span class="attr">xmlns:tx</span>=<span class="string">"http://www.springframework.org/schema/tx"</span></div><div class="line"><span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></div><div class="line">	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd</div><div class="line">	http://www.springframework.org/schema/mvc</div><div class="line">	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd</div><div class="line">	http://www.springframework.org/schema/context</div><div class="line">	http://www.springframework.org/schema/context/spring-context-3.2.xsd</div><div class="line">	http://www.springframework.org/schema/aop</div><div class="line">	http://www.springframework.org/schema/aop/spring-aop-3.2.xsd</div><div class="line">	http://www.springframework.org/schema/tx</div><div class="line">	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd "&gt;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"tagService"</span> <span class="attr">class</span>=<span class="string">"com.test.service.TagServiceImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
 
           
         
