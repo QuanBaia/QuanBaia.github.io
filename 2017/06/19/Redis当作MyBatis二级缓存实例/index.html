@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://i1.buimg.com/598118/1f750d49203ee0c6.jpg">
 <meta property="og:image" content="http://i1.buimg.com/598118/59c136379752c42d.jpg">
 <meta property="og:image" content="http://i4.piimg.com/598118/0f102e6bc2f5cca6.jpg">
-<meta property="og:updated_time" content="2017-06-20T21:43:19.649Z">
+<meta property="og:updated_time" content="2017-06-21T11:14:09.255Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis当作MyBatis二级缓存实例">
 <meta name="twitter:description" content="Redis 二级缓存 由于 Redis 的极佳表现和可以持久化的操作越来越受企业的欢迎，我们今天就来探讨一下，怎么使用 Redis 当做 MyBatis 的二级缓存 优点 使用缓存可以有效的避免重复性的请求服务器数据库，减少对服务器的请求次数，更好的用户体验 Redis相对于其他 Key–Value 数据库，Redis 支持数据 持久化 可以进行数据库备份，即 Master-slave 模式的数据">
@@ -445,7 +445,7 @@
 <p>我们需要把 Redis 安装包下载下来，自行安装</p>
 </blockquote>
 <pre>
-  <code>$ wget http://download.redis.io/releases/redis-2.8.3.tar.gz
+  <code>$ wget http://download.redis.io/releases/redis-3.2.9.tar.gz
 $ tar xzf redis-3.2.9.tar.gz
 $ cd redis-3.2.9
 $ make </code>
@@ -585,6 +585,7 @@ cd /usr/redis </code>
 </li>
 </ul>
 <h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3><ul>
+<li>如果报错的话，可能是 Jar 包 版本冲突</li>
 <li>现在我们启动 TomCat 来进入页面，测试一下 Redis 的效果，如果没有数据的话，先添加几条数据<blockquote>
 <p>运行成功，数据已经显示在页面上</p>
 </blockquote>
